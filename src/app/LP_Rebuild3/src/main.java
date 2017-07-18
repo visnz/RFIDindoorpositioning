@@ -1,4 +1,4 @@
-import Network.SocketReceiver;
+import Kernel.Run;
 
 import java.net.UnknownHostException;
 
@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 public class main {
     public static void main(String[] args) throws UnknownHostException {
         System.out.println("helloworld");
-        new Kernel.Run().run();
+        //new Kernel.Run().run();
+        new Run().run();
     }
 }

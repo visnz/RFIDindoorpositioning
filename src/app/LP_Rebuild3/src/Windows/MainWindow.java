@@ -64,9 +64,6 @@ public class MainWindow {
         menuBar.add(menuView);
 
         //FileDialog loader = new FileDialog(mainWindow, "load the file", FileDialog.LOAD);
-
-
-
     }
 
 

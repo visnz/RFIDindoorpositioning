@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
+ * 图像管理器，每个图像管理器包含文件输入流和一张表
+ *
  * Created by zyvis on 2017/3/5.
  */
 public class ImageManager {

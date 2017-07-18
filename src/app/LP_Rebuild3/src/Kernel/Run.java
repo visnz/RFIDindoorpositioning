@@ -2,16 +2,16 @@ package Kernel;
 
 import Loger.defaultLog;
 import MiniProperties.DrawobjImage;
-import MiniProperties.Waypoint;
 import Network.SocketReceiver;
 import Objects.Actor;
 import Objects.Tag;
 import Windows.MainWindow;
 
 import java.io.IOException;
-import java.net.Socket;
 
 /**
+ * 这个是核心的 运行类
+ *  在其中设定了服务器的接入点
  * Created by zyvis on 2017/3/5.
  */
 public class Run implements Runnable {
@@ -34,7 +34,7 @@ public class Run implements Runnable {
         }
         MainWindow mainWindow=new MainWindow();
         mainWindow.getLocalBasePanel().setBaseImage(im.fecth("BaseImage"));
-        mainWindow.getLocalBasePanel().setImageFloor(im.fecth("floor"));
+        //mainWindow.getLocalBasePanel().setImageFloor(im.fecth("floor"));
         defaultLog.report("Panel ready ");
         try {
             socketReceiver=new SocketReceiver("119.29.245.150",3345);

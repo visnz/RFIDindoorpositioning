@@ -7,6 +7,8 @@ import Objects.Tag;
 import Windows.BasePanel;
 
 /**
+ * 命令的解释器
+ * 包含了集中命令可以用于访问操作层
  * Created by zyvis on 2017/4/13.
  */
 public class CommandCoder {

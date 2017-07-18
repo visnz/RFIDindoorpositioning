@@ -1,22 +1,19 @@
 package Network;
 
-import Loger.Log;
 import Loger.defaultLog;
 
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
+ * 类中封装了一个Socket和Scanner
+ * 直接由构造器构造IP和Port，使用{@link #getData()}获取数据
  * Created by zyvis on 2017/4/10.
  */
 public class SocketReceiver {
-    Socket insideSocket;
-    Scanner scanner;
+    protected Socket insideSocket;
+    protected Scanner scanner;
 
     public SocketReceiver(String IP,int port) throws IOException {
         insideSocket=new Socket(IP,port);

@@ -9,7 +9,7 @@ import java.util.Scanner;
  * 此代码运行在服务端，作为中间代理服务器
  * 3345作为客户端接入，3346作为数据提供端接入
  * 由于写得仓促，需要先运行这个，
- * 再运行客户端，最终启动数据提供端
+ * 再运行客户端，最终启动数据提供端（发数据的软件）
  */
 public class server {
     public static void main(String[] args) throws IOException {

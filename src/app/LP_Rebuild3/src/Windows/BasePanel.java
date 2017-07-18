@@ -2,9 +2,7 @@ package Windows;
 
 import Loger.defaultLog;
 import MiniProperties.Framesize;
-import MiniProperties.Waypoint;
 import Objects.Actor;
-import Objects.Drawobj;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,46 +14,49 @@ import java.util.LinkedList;
  * Created by zyvis on 2016/11/28.
  */
 public class BasePanel extends JPanel {
-
+    //private Waypoint mouse,
     protected BufferedImage baseImage=null;
-
-    public void setImageFloor(BufferedImage imageFloor) {
-        this.imageFloor = imageFloor;
-    }
-
-    protected BufferedImage imageFloor=null;
     protected LinkedList<Actor> objlist =new LinkedList<>();
+    protected Iterator<Actor> actorIterator;
     public  BufferedImage getBaseImage() {
-       return baseImage;
+        return baseImage;
     }
     public void setBaseImage(BufferedImage baseImage) {
-       this.baseImage = baseImage;
-        defaultLog.report("baseimage installed");
+        this.baseImage = baseImage;
+        defaultLog.report("base image installed");
     }
     protected Framesize framesize;
     public BasePanel() {
-        if(baseImage!=null)
-            framesize=new Framesize(baseImage.getWidth(),baseImage.getHeight());
+        if(baseImage!=null)framesize=new Framesize(baseImage.getWidth(),baseImage.getHeight());
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        //g.drawImage(imageFloor,0,0,null);
-    }
-    public void add(Actor tmp){
-        objlist.add(tmp);
-        defaultLog.report("actor obj added successfully");
-        Graphics g = null;
+        if(framesize==null)framesize=new Framesize(baseImage.getWidth(),baseImage.getHeight());
+        g.drawImage(baseImage,0,0,null);
+        Actor tmp;
         defaultLog.report("draw obj");
-        g.drawImage(tmp.getDrawobjImage().getImage(),
-                tmp.getWaypoint().getMidX()-tmp.getFramesize().getWidth()/2,
-                tmp.getWaypoint().getMidY()-tmp.getFramesize().getHeight()/2,
-                null);
-        this.update(g);
+        actorIterator=objlist.iterator();
+        while(actorIterator.hasNext()) {
+            tmp = actorIterator.next();
+            g.drawImage(tmp.getDrawobjImage().getImage(),
+                    tmp.getWaypoint().getMidX()-tmp.getFramesize().getWidth()/2,
+                    tmp.getWaypoint().getMidY()-tmp.getFramesize().getHeight()/2,
+                    null);
+        }
+
+    }
+    public void add(Actor obj){
+        objlist.add(obj);
+        defaultLog.report("actor obj added successfully");
+        this.repaint();
     }
     public void clear(){
+        objlist.clear();
         paint(baseImage.getGraphics());
+        defaultLog.report("objlist.isEmpty()"+objlist.isEmpty());
     }
+
 }
 
