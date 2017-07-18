@@ -1,4 +1,4 @@
-package RemoteCode;
+//package RemoteCode;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,19 +13,24 @@ import java.util.Scanner;
  */
 public class server {
     public static void main(String[] args) throws IOException {
-        DataReceiverLinstener dataReceiverLinstener=new DataReceiverLinstener();
-        DataSenderLinstener dataSenderLinstener=new DataSenderLinstener();
-
-
-
+        DataReceiverListener dataReceiverLinstener=new DataReceiverListener();
+        DataSenderListener dataSenderLinstener=new DataSenderListener();
+        System.out.println("double socket is ready");
+        dataReceiverLinstener.start();
+        dataSenderLinstener.start();
+        boolean repeat=false;
         while(true){
-            System.out.println("wait for connection");
-            dataReceiverLinstener.start();
-            dataSenderLinstener.start();
+            if(!repeat){System.out.println("wait for connection");repeat=true;}
+            if(dataReceiverLinstener.isLink()&&dataSenderLinstener.isLink()){
+                System.out.println("trans start");
+                new Send(new PrintStream(dataReceiverLinstener.clientSocket.getOutputStream()),new Scanner(dataSenderLinstener.dataSenderSocket.getInputStream())).run();
+                repeat=false;
+            }
+            else {
+                //System.out.println(dataReceiverLinstener.isLink()&&dataSenderLinstener.isLink());
+                continue;
 
-            if(!(dataReceiverLinstener.isLink()&&dataSenderLinstener.isLink()))continue;
-            new Send(new PrintStream(dataReceiverLinstener.clientSocket.getOutputStream()),new Scanner(dataSenderLinstener.dataSenderSocket.getInputStream())).start();
-
+            }
         }
 
     }
@@ -39,8 +44,8 @@ public class server {
         }
 
         @Override
-        public synchronized void start() {
-            super.start();
+        public void run() {
+            super.run();
             System.out.println("client && data sender is ready");
             for(;;) {
                 try{
@@ -56,24 +61,26 @@ public class server {
             }
         }
     }
-    private static class DataReceiverLinstener extends Thread{
+    private static class DataReceiverListener extends Thread{
         ServerSocket lpClient=new ServerSocket(3345);//LP Client;
         Socket clientSocket=null;
 
-        private DataReceiverLinstener() throws IOException {
+        private DataReceiverListener() throws IOException {
         }
 
         @Override
-        public synchronized void start() {
-            super.start();
+        public void run() {
+            super.run();
+            System.out.println("DataReceiverListener start");
             for(;;) {
-                if (clientSocket == null) {
+                if (!isLink()) {
                     try {
                         clientSocket = lpClient.accept();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("client connect !");
+                    System.out.println("client connect ! isLink = "+isLink());
+                    break;
                 }
             }
         }
@@ -84,22 +91,26 @@ public class server {
             clientSocket=null;
         }
     }
-    private static class DataSenderLinstener extends Thread{
+    private static class DataSenderListener extends Thread{
         ServerSocket lpDataSender=new ServerSocket(3346);
         Socket dataSenderSocket=null;
-        private DataSenderLinstener() throws IOException {
+        private DataSenderListener() throws IOException {
         }
 
         @Override
-        public synchronized void start() {
-            super.start();
-            if(dataSenderSocket==null){
-                try {
-                    dataSenderSocket=lpDataSender.accept();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        public void run() {
+            super.run();
+            System.out.println("DataSenderListener start");
+            for(;;) {
+                if (!isLink()) {
+                    try {
+                        dataSenderSocket = lpDataSender.accept();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("data sender connect ! isLink = "+isLink());
+                    break;
                 }
-                System.out.println("data sender connect !");
             }
         }
         void interruptLink(){

@@ -2,14 +2,12 @@ package Kernel;
 
 import Loger.defaultLog;
 import MiniProperties.DrawobjImage;
-import MiniProperties.Waypoint;
 import Network.SocketReceiver;
 import Objects.Actor;
 import Objects.Tag;
 import Windows.MainWindow;
 
 import java.io.IOException;
-import java.net.Socket;
 
 /**
  * Created by zyvis on 2017/3/5.
@@ -37,7 +35,7 @@ public class Run implements Runnable {
         mainWindow.getLocalBasePanel().setImageFloor(im.fecth("floor"));
         defaultLog.report("Panel ready ");
         try {
-            socketReceiver=new SocketReceiver("119.29.245.150",3345);
+            socketReceiver=new SocketReceiver("119.23.31.19",3345);
             defaultLog.report("Socket ready");
         } catch (IOException e) {
             e.printStackTrace();
